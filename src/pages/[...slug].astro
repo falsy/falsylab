@@ -1,0 +1,86 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import archivedComments from '../data/wordpress-comments.json';
+import { getPosts, getPages, dateLabel, sections, tagSlug, tagHref, type Post } from '../lib/content';
+import { legacyHtml } from '../lib/legacy-html';
+
+interface Props {
+  kind: 'post' | 'page' | 'category' | 'tag';
+  entry?: CollectionEntry<'posts' | 'pages'>;
+  posts?: Post[];
+  name?: string;
+}
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const pages = await getPages();
+  const tags = new Map(posts.flatMap((post) => post.data.tags.map((name) => [tagSlug(name), name] as const)));
+  const paths = [
+    ...posts.map((entry) => ({ params: { slug: entry.data.slug }, props: { kind: 'post', entry } })),
+    ...pages.map((entry) => ({ params: { slug: entry.data.slug }, props: { kind: 'page', entry } })),
+    ...sections.map((section) => ({ params: { slug: section.slug }, props: { kind: 'category', name: section.name, posts: posts.filter((post) => post.data.categories.includes(section.slug)) } })),
+    ...[...tags].map(([slug, name]) => ({ params: { slug: `tag/${slug}` }, props: { kind: 'tag', name, posts: posts.filter((post) => post.data.tags.some((tag) => tagSlug(tag) === slug)) } })),
+  ];
+  const seen = new Set<string>();
+  for (const path of paths) {
+    if (seen.has(path.params.slug)) throw new Error(`Duplicate page path: ${path.params.slug}`);
+    if (path.params.slug.split('/').some((part) => part === '..' || part === '.')) throw new Error(`Invalid page path: ${path.params.slug}`);
+    seen.add(path.params.slug);
+  }
+  return paths;
+}
+
+const { kind, entry, posts = [], name } = Astro.props;
+const importedHtml = entry?.data.wordpressId ? await legacyHtml(entry.body ?? '', entry.data.wordpressAutoParagraphs) : null;
+const rendered = entry && !entry.data.wordpressId ? await render(entry) : null;
+const Content = rendered?.Content;
+const post = kind === 'post' ? entry as Post : undefined;
+const title = entry?.data.title ?? (kind === 'tag' ? `#${name}` : name ?? '폴시랩');
+const heading = entry?.data.wordpressId ? entry.data.description || title : title;
+const allPosts = post ? await getPosts() : [];
+const others = allPosts.filter((other) => other.id !== post?.id);
+const related = post ? [...others.filter((other) => other.data.categories.some((category) => post.data.categories.includes(category))), ...others]
+  .filter((other, index, list) => list.findIndex((item) => item.id === other.id) === index).slice(0, 3) : [];
+type ArchivedComment = { id: number; parent: number; author: string; date: string; content: string };
+const comments = post?.data.wordpressId ? (archivedComments as Record<string, ArchivedComment[]>)[String(post.data.wordpressId)] ?? [] : [];
+const commentText = (content: string) => content.replace(/<[^>]+>/g, '');
+---
+<Base title={title} description={entry?.data.description || title} bodyClass={post ? 'single single-post' : `page ${kind}`} image={post?.data.image} published={post?.data.date} updated={post?.data.updated}>
+  {post && <div class="overview" id={`post-${post.data.wordpressId ?? post.id}`}>
+    <header class="entry-header"><div class="container">
+      <h1>{heading}</h1>
+      <p class="post_date highlight_color"><time datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time></p>
+    </div>
+      <div id="back-arrow-btn"><a href="/" aria-label="홈으로 돌아가기"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.49 31.49" aria-hidden="true"><path style="fill:#1E201D;" d="M21.205,5.007c-0.429-0.444-1.143-0.444-1.587,0c-0.429,0.429-0.429,1.143,0,1.571l8.047,8.047H1.111  C0.492,14.626,0,15.118,0,15.737c0,0.619,0.492,1.127,1.111,1.127h26.554l-8.047,8.032c-0.429,0.444-0.429,1.159,0,1.587  c0.444,0.444,1.159,0.444,1.587,0l9.952-9.952c0.444-0.429,0.444-1.143,0-1.571L21.205,5.007z"/></svg></a></div>
+      <ThemeToggle />
+    </header>
+    <div class="container">
+      <article class:list={['entry-content', { 'markdown-body': !post.data.wordpressId }]}>{importedHtml !== null ? <Fragment set:html={importedHtml} /> : Content && <Content />}</article>
+      {post.data.tags.length > 0 && <nav class="post-tags" aria-label="글 태그">{post.data.tags.map((tag) => <a href={tagHref(tag)}>#{tag}</a>)}</nav>}
+      {related.length > 0 && <section id="other-posts"><h3>Other posts</h3><PostList posts={related} thumbnails related /></section>}
+      {comments.length > 0 && <details class="archived-comments"><summary>이전 댓글 {comments.length}개</summary><ol>
+        {comments.map((comment) => <li id={`comment-${comment.id}`}><p class="comment-heading"><strong>{comment.author}</strong><time>{comment.date}</time></p><p class="comment-content">{commentText(comment.content)}</p></li>)}
+      </ol></details>}
+      {import.meta.env.PROD && <section id="utterances" aria-label="댓글"><script is:inline>
+        const comments = document.getElementById('utterances');
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'falsy/falsylab-theme');
+        script.setAttribute('issue-term', 'pathname');
+        script.setAttribute('theme', document.documentElement.classList.contains('dark-mode') ? 'github-dark' : 'github-light');
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+        comments?.appendChild(script);
+      </script></section>}
+    </div>
+  </div>}
+  {kind === 'page' && <section id="page_content"><div class="container"><div class="col_box"><section id={entry?.data.slug} class:list={['overview', 'entry-content', { 'markdown-body': !entry?.data.wordpressId }]}>{importedHtml !== null ? <Fragment set:html={importedHtml} /> : Content && <Content />}</section></div></div></section>}
+  {(kind === 'category' || kind === 'tag') && <section id="page_content"><div class="container">
+    {kind === 'tag' && <h2 class="search-tag-title">Search for tag, <span>#{name}</span></h2>}
+    <PostList posts={posts} thumbnails />
+    {posts.length === 0 && <p>글이 없습니다.</p>}
+  </div></section>}
+</Base>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<title>SVG Animate - SVG &amp; CSS</title>
+		<style>
+			.navigation-button {position:absolute; width:65px; height:65px; top:40px; left:40px; background:#000; cursor:pointer;}
+			
+			.navigation-button svg {  
+				transform: rotate(0);
+				-webkit-transform: rotate(0);
+				transition:transform 1s;
+				-webkit-transition:transform 1s;
+			}
+			.active.navigation-button svg {
+				transform: rotate(270deg);
+				-webkit-transform: rotate(270deg);
+			}
+			.navigation-button .nav_bar_1 { 
+				transform: rotate(0) translateX(0) translateY(0);
+  				-webkit-transform: rotate(0) translateX(0) translateY(0);
+  				transition: 0.5s;
+  				-webkit-transition: 0.5s;
+  			}
+  			.navigation-button .nav_bar_2 {
+				opacity: 1;
+				transform: translateX(0);
+				-webkit-transform: translateX(0);
+				transition: 0.3s;
+				-webkit-transition: 0.3s;
+			}
+			.navigation-button .nav_bar_3 {
+				transform: rotate(0) translateX(0) translateY(0);
+				-webkit-transform: rotate(0) translateX(0) translateY(0);
+			 	 transition: 0.5s;
+				-webkit-transition: 0.5s;
+			}
+			.active.navigation-button .nav_bar_1 {
+				transform: rotate(45deg) translateX(13px) translateY(-26px);
+				-webkit-transform: rotate(45deg) translateX(13px) translateY(-26px);
+			}
+			.active.navigation-button .nav_bar_2 {
+				opacity: 0;
+				transform: translateX(-5px);
+				-webkit-transform: translateX(-5px);
+			}
+			.active.navigation-button .nav_bar_3 {
+				transform: rotate(-45deg) translateX(-33px) translateY(6px);
+				-webkit-transform: rotate(-45deg) translateX(-33px) translateY(6px);
+			}
+			
+			
+	.navigation-button2 {position:absolute; width:65px; height:65px; top:40px; left:200px; background:#000; cursor:pointer;}
+	
+	.navigation-button2 .button-icon {
+		width:65px;
+		height:65px;
+		transform: rotate(0);
+		-webkit-transform: rotate(0);
+		transition:transform 1s;
+		-webkit-transition:transform 1s;
+	}
+	.active.navigation-button2 .button-icon {
+		transform: rotate(270deg);
+		-webkit-transform: rotate(270deg);
+	}
+	
+	.navigation-button2 .button-icon > div {
+		position:absolute; 
+		height:2px; 
+		width:28px; 
+		background:#fff; 
+		left:19px;
+	}
+	
+	.navigation-button2 .nav_bar_top { 
+		transform: rotate(0) translateX(0) translateY(0);
+		-webkit-transform: rotate(0) translateX(0) translateY(0);
+		transition: 0.5s;
+		-webkit-transition: 0.5s;
+		top:25px;
+	}
+	.navigation-button2 .nav_bar_middle {
+		opacity: 1;
+		transform: translateX(0);
+		-webkit-transform: translateX(0);
+		transition: 0.3s;
+		-webkit-transition: 0.3s;
+		top:32px;
+	}
+	.navigation-button2 .nav_bar_bottom {
+		transform: rotate(0) translateX(0) translateY(0);
+		-webkit-transform: rotate(0) translateX(0) translateY(0);
+	 	 transition: 0.5s;
+		-webkit-transition: 0.5s;
+		top:39px;
+	}
+	.active.navigation-button2 .nav_bar_top {
+		transform: rotate(45deg) translateX(5px) translateY(5px);
+		-webkit-transform: rotate(45deg) translateX(5px) translateY(5px);
+	}
+	.active.navigation-button2 .nav_bar_middle {
+		opacity: 0;
+		transform: translateX(-5px);
+		-webkit-transform: translateX(-5px);
+	}
+	.active.navigation-button2 .nav_bar_bottom {
+		transform: rotate(-45deg) translateX(5px) translateY(-5px);
+		-webkit-transform: rotate(-45deg) translateX(5px) translateY(-5px);
+	}
+			
+			
+		</style>
+	</head>
+	<body>
+		<div class="navigation-button">
+			<svg xmlns="http://www.w3.org/2000/svg" width="65px" height="65px">
+				<line class="nav_bar_1" x1="19px" y1="26px" x2="47px" y2="26px" stroke="#fff" stroke-width="2px"></line>
+				<line class="nav_bar_2" x1="19px" y1="33px" x2="47px" y2="33px" stroke="#fff" stroke-width="2px"></line>
+				<line class="nav_bar_3" x1="19px" y1="40px" x2="47px" y2="40px" stroke="#fff" stroke-width="2px"></line>
+			</svg>
+			<p>SVG</p>	
+		</div>
+		
+		<div class="navigation-button2">
+			<div class="button-icon">
+				<div class="nav_bar_top"></div>
+				<div class="nav_bar_middle"></div>
+				<div class="nav_bar_bottom"></div>
+			</div>
+			<p>DIV</p>
+		</div>
+		
+	<script src="/preview/vendor/jquery-1.10.2.min.js"></script>
+	<script>
+	jQuery(document).ready(function(){
+		
+		$(".navigation-button, .navigation-button2").on("click", function(){
+			if($(this).hasClass("active")){
+				$(this).removeClass("active");
+			}else{
+				$(this).addClass("active");
+			}
+		});
+    
+	});
+	</script>
+	</body>
+</html>

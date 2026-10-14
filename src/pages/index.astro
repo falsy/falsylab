@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import { getPosts } from '../lib/content';
+const posts = (await getPosts()).filter((post) => post.data.categories.some((category) => ['programming', 'project', 'blog'].includes(category)));
+---
+<Base bodyClass="home">
+  <section id="page_content"><div class="container"><PostList posts={posts} thumbnails /></div></section>
+</Base>

@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'ProximaNova-Regular';
+  src: url('/theme/js/webfonts/390C5D_0_0.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Keep the WordPress theme's structure and add styles for static Markdown content. */
+.theme-toggle { border: 0; padding: 0; background: transparent; color: inherit; }
+.theme-toggle svg { display: block; width: 24px; height: 24px; }
+.theme-toggle:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid #33c1ab; outline-offset: 5px; }
+.skip-link { position: fixed; top: -100px; left: 20px; background: #fff; padding: 12px; z-index: 200; }
+.skip-link:focus { top: 10px; }
+.post_content_box .post-thumbnail { aspect-ratio: 540 / 320; overflow: hidden; }
+.post_content_box .post-thumbnail > a { display: block; height: 100%; }
+#page_content .col .post_content_box .post-thumbnail img,
+#other-posts .col .post_content_box .post-thumbnail img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.entry-content { overflow-wrap: break-word; }
+.markdown-body { font-size: 16px; line-height: 1.9; }
+.entry-content img { max-width: 100%; height: auto; }
+.entry-content iframe { max-width: 100%; }
+.entry-content pre { overflow-x: auto; padding: 20px; margin: 25px 0; border-radius: 3px; font-size: 13px; line-height: 1.75; background-color: #f5f5f5 !important; }
+.entry-content pre code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.legacy-code { background: #f6f8fa; color: #24292e; }
+.post-tags { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 35px 0; font-size: 13px; }
+.post-tags a { color: #777; }
+.archived-comments { margin: 40px 0; font-size: 14px; }
+.archived-comments summary { cursor: pointer; padding: 15px 0; border-top: 1px solid #ddd; }
+.archived-comments li { padding: 20px 0; border-bottom: 1px solid #eee; }
+.comment-heading { display: flex; gap: 15px; align-items: baseline; margin-bottom: 10px; }
+.comment-heading time { font-size: 12px; color: #777; }
+.comment-content { white-space: pre-line; }
+.page-content { padding-bottom: 40px; font-size: 16px; }
+.page-content p { margin-bottom: 18px; }
+.markdown-body p, .markdown-body ul, .markdown-body ol, .markdown-body blockquote { margin: 20px 0; }
+.markdown-body h2 { margin-top: 45px; font-size: 24px; font-weight: normal; }
+.markdown-body h3 { margin-top: 35px; }
+.markdown-body ul, .markdown-body ol { padding-left: 24px; }
+.markdown-body ul li { list-style: disc; }
+.markdown-body ol li { list-style: decimal; }
+.markdown-body a { border-bottom: 1px solid #33c1ab; }
+.markdown-body blockquote { padding-left: 20px; border-left: 3px solid #33c1ab; color: #777; }
+.markdown-body :not(pre) > code { padding: 2px 5px; background: #f2f3f3; border-radius: 3px; font-size: 0.85em; }
+.markdown-body table { border-collapse: collapse; display: block; overflow: auto; margin: 20px 0; }
+.markdown-body th, .markdown-body td { padding: 10px 15px; border: 1px solid #ddd; }
+.dark-mode .shiki, .dark-mode .shiki span, .dark-mode .astro-code, .dark-mode .astro-code span { color: var(--shiki-dark) !important; background-color: var(--shiki-dark-bg) !important; }
+.dark-mode .legacy-code, .dark-mode .markdown-body :not(pre) > code { background: #252827; color: #ddd; }
+.dark-mode .archived-comments summary, .dark-mode .archived-comments li { border-color: #333; }
+.dark-mode .skip-link { background: #222; }
+@media (max-width: 500px) {
+  .entry-content pre { padding: 15px; font-size: 12px; }
+}

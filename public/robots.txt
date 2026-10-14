@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://falsy.me/sitemap.xml

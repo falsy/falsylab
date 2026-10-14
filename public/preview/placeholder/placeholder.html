@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<title>Input Placeholder - CSS</title>
+		<style>
+			.placeholder_box {position:relative; margin:15px 10px;}
+			.placeholder_box label {color:#999; position:absolute; top:13px; left:15px; font-size:12px; cursor:text;}
+			.placeholder_box input[type="text"] {border:1px solid #ededed; height:40px; width:200px; padding:13px 15px; box-sizing:border-box;}
+		</style>
+	</head>
+	<body>
+		<div class="placeholder_box">
+			<label for="placeholder">Placeholder Name</label>
+			<input type="text" id="placeholder" name="placeholdername" />
+		</div>
+		<div class="placeholder_box">
+			<label for="placeholder2">Placeholder Age</label>
+			<input type="text" id="placeholder2" name="placeholderage" />
+		</div>
+		
+	<script src="/preview/vendor/jquery-1.10.2.min.js"></script>
+	<script>
+	jQuery(document).ready(function(){
+		
+		var placeholderTarget = $(".placeholder_box input[type=text]");
+		
+	    placeholderTarget.focus(function(){
+	    	$(this).siblings("label").fadeOut("fast");
+	    });
+	    placeholderTarget.focusout(function(){
+	    	if($(this).val() == ""){
+	    		$(this).siblings("label").fadeIn("fast");
+	    	}
+	    });
+    
+	});
+	</script>
+	</body>
+</html>

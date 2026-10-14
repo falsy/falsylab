@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<title>Drag Slider - jQuery</title>
+		<style>
+		#dragslide {position:relative; width:500px; height:500px;}
+		#mousearea {position:absolute; width:100%; height:100%; z-index:100; cursor:move; cursor:grab; cursor:-webkit-grab; cursor:-moz-grab;}
+		#mousearea.grab {cursor:move; cursor:grabbing; cursor:-webkit-grabbing; cursor:-moz-grabbing;}
+		#mouse_img {position:absolute; width:50px; height:50px; margin:-25px 0 0 -25px; background:url(./arrow.png) center center no-repeat;}
+		#dragslide > div.slidebox {width:500px; height:500px; display:none;}
+		#dragslide > div.slidebox.active {display:block;}
+		#slide1 {background:#63c2d4;}
+		#slide2 {background:#57d0b8;}
+		#slide3 {background:#e09cf3;}
+		#slide4 {background:#d3b969;}
+		</style>
+	</head>
+	<body>
+	<div id="dragslide">
+		<div id="mousearea"></div>
+		<div id="slide1" class="slidebox active"></div>
+		<div id="slide2" class="slidebox"></div>
+		<div id="slide3" class="slidebox"></div>
+		<div id="slide4" class="slidebox"></div>
+		<div id="mouse_img"></div>
+	</div>
+		
+	<script src="/preview/vendor/jquery-1.10.2.min.js"></script>
+	<script>
+	jQuery(document).ready(function(){
+		
+        //대상 설정
+        var slideArea = $("#mousearea"),
+            slideDiv = slideArea.siblings("div.slidebox"),
+            slideNumber = slideDiv.size(),
+            mouseImg = $("#mouse_img"),
+            //설정 - 이벤트 드래그 이동량
+            dragSize = 100,
+            //기본값
+            slideCount = 1,
+            mDown = false;
+        
+        
+        //마우스 좌클릭 확인
+        slideArea.mousedown(function(event){
+            mDown = true;
+            dragX = event.pageX;
+            slideArea.addClass("grab");
+        });
+        slideArea.mouseup(function(){
+            mDown = false;
+            slideArea.removeClass("grab");
+        });
+        
+        
+        //마우스 드래그 확인
+        slideArea.mousemove(function(event){
+            
+            //마우스가 좌클릭 상태로 마우스를 'dragSize' 이상 이동시
+            if(mDown == true && dragX + dragSize < event.pageX){ 
+                
+                //기준점 재정의
+                dragX = event.pageX;
+                
+                if(slideCount < slideNumber){
+                    add_remove_class(); //슬라이드 배경 비활성화, 활성화
+                    slideCount ++;
+                }else{
+                    slideCount = 0;
+                    add_remove_class();
+                    slideCount ++;
+                }
+            }
+            if(mDown == true && dragX - dragSize > event.pageX){
+                            
+                dragX = event.pageX;
+                if(0 < slideCount && slideCount){
+                    slideCount --;
+                    add_remove_class();
+                }else{
+                    slideCount = slideNumber - 1;
+                    add_remove_class();
+                }
+            }
+            
+        });
+
+        //슬라이드 배경 비활성화, 활성화
+        function add_remove_class(){ 
+            slideDiv.removeClass("active");
+            slideDiv.eq(slideCount).addClass("active");
+        }
+        
+        
+        //슬라이드 안에서의 마우스를 따라다니는 레이어
+        slideArea.mousemove(function(event){
+            
+            //파이어폭스에선 offsetX, offsetY을 찾을수 없음
+            var firefoxCoordiX=  event.pageX - $(event.target).offset().left;
+            var firefoxCoordiY=  event.pageY - $(event.target).offset().top;
+            var coordiX = event.offsetX === undefined ? firefoxCoordiX : event.offsetX;
+            var coordiY = event.offsetY === undefined ? firefoxCoordiY : event.offsetY;
+            
+            mouseImg.fadeIn("fast"); 
+            mouseImg.css({"left" : coordiX, "top" : coordiY});
+            
+        });
+	});
+	</script>
+	</body>
+</html>

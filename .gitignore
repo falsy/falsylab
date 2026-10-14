@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.astro/
+.sites-runtime/
+.npm-cache/
+.DS_Store
+__pycache__/
+*.pem
+.env
+.env.*
+!.env.example
+
+# Keep the original WordPress backup, private content, and server logs local.
+/WordPress*.xml
+/uploads/
+/preview/
+/backups/
+/migration-report.json

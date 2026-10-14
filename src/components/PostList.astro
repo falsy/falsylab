@@ -1,0 +1,23 @@
+---
+import { dateLabel, href, type Post } from '../lib/content';
+interface Props { posts: Post[]; thumbnails?: boolean; related?: boolean }
+const { posts, thumbnails = true, related = false } = Astro.props;
+---
+<div class={related ? 'other-posts-container' : 'col_box_full'}>
+  {posts.map((post) => (
+    <article id={`post-${post.data.wordpressId ?? post.id}`} class="col">
+      <div><div><div class="post_content_box">
+        {thumbnails && <figure class="post-thumbnail">{post.data.image && (related
+          ? <img src={post.data.image} alt="" width="540" height="320" loading="lazy" decoding="async" />
+          : <a href={href(post)} tabindex="-1" aria-hidden="true"><img src={post.data.image} alt="" width="540" height="320" loading="lazy" decoding="async" /></a>)
+        }</figure>}
+        {related
+          ? <h2 class="thumb_text"><p>{post.data.description || post.data.title}</p></h2>
+          : <div class="thumb_text"><p><a href={href(post)}>{post.data.description || post.data.title}</a></p></div>
+        }
+        <div class="post_date"><time datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time></div>
+      </div>{related && <a href={href(post)} aria-label={post.data.title}>link area</a>}</div></div>
+    </article>
+  ))}
+  {related && <div style="clear: left;"></div>}
+</div>

@@ -1,0 +1,6 @@
+---
+import { rssXml } from '../../lib/rss';
+return new Response(await rssXml(Astro.site), {
+  headers: { 'Content-Type': 'application/rss+xml; charset=utf-8' },
+});
+---
