@@ -65,6 +65,8 @@ git push origin main
 
 기존 글은 레이아웃, 표, 이미지 배치와 코드 예제를 보존하기 위해 Markdown 파일 안에 HTML 본문을 유지했습니다. 클래식 에디터 글은 WordPress의 공식 `@wordpress/autop` 패키지로 출력 시 줄바꿈과 문단을 복원합니다. 블록 에디터 글은 `wordpressAutoParagraphs: false`로 기존 HTML을 그대로 출력합니다. 새 글은 일반 Markdown으로 작성하면 됩니다. `originalPath`는 기존 URL의 인코딩까지 보존하기 위한 값이므로 기존 글 수정 시 유지합니다.
 
+예전 블로그 주소인 `lab.falsy.me`가 들어 있던 이미지와 내부 글 링크도 현재 사이트의 내부 경로로 연결했습니다. 과거 설명과 명령어·서버 설정 등 코드 예제 안의 도메인은 원문 그대로 유지합니다.
+
 About 페이지는 `src/content/pages/about.md`에서 수정합니다. 홈, Programming, Project, Blog, Essay 페이지는 공개 글의 카테고리로 자동 생성합니다. 태그 페이지와 RSS(`/rss.xml`, 기존 `/feed/` 경로), 사이트맵도 자동 생성됩니다.
 
 기존 테마의 CSS, 폰트와 파비콘은 `public/theme/`에 있습니다. 추가 스타일은 `src/styles/site.css`에서 관리합니다. 라이트/다크 모드, Google Analytics와 기존 Utterances 저장소(`falsy/falsylab-theme`) 설정을 유지했습니다. 워드프레스 댓글 58개는 기존 글 하단의 접을 수 있는 영역에서 읽을 수 있습니다. 댓글 작성자의 이메일과 IP 주소는 가져오지 않았습니다.
@@ -100,7 +102,7 @@ npm run import:preview
 
 GitHub Actions로 배포할 때 도메인은 **저장소의 Pages 설정에서** 지정해야 합니다. `public/CNAME`만 추가해서는 도메인이 설정되지 않습니다. 이 프로젝트는 `https://falsy.me`의 루트 경로로 배포하도록 구성되어 있으므로, 도메인을 연결하지 않은 `https://falsy.github.io/falsylab/` 경로에서 사용하려면 `base`와 내부 링크 설정을 별도로 바꿔야 합니다.
 
-DNS 제공업체에 `www`를 사용한다면 CNAME을 `falsy.github.io`로 설정합니다. `lab.falsy.me`의 데모는 별도로 운영되므로 블로그 이전과 별개로 관리합니다.
+DNS 제공업체에 `www`를 사용한다면 CNAME을 `falsy.github.io`로 설정합니다. `lab.falsy.me`를 참조하던 기존 글의 이미지와 내부 링크는 현재 사이트로 이전되어 블로그에서 더 이상 이 서브도메인에 의존하지 않습니다. 현재 이 서브도메인에 다른 서비스를 운영 중이라면 해당 DNS 설정은 별도로 관리합니다.
 
 공식 문서: [Astro의 GitHub Pages 배포](https://docs.astro.build/en/guides/deploy/github/), [GitHub의 사용자 도메인 설정](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
 

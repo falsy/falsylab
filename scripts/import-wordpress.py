@@ -18,7 +18,7 @@ NS = {
     "content": "http://purl.org/rss/1.0/modules/content/",
     "excerpt": "http://wordpress.org/export/1.2/excerpt/",
 }
-LOCAL_HOSTS = {"falsy.me", "www.falsy.me", "cheolguso.com", "www.cheolguso.com"}
+LOCAL_HOSTS = {"falsy.me", "www.falsy.me", "lab.falsy.me", "cheolguso.com", "www.cheolguso.com"}
 MEDIA_PREFIX = "/wp-content/uploads/"
 
 
@@ -142,7 +142,7 @@ def main():
 
         body = re.sub(r"\[al([^\]]*)\]([\s\S]*?)\[/al\]", link, body)
         # Rewrite actual URLs outside code examples; old domain media now use local files.
-        body = re.sub(r"https?://(?:www\.)?(?:falsy\.me|cheolguso\.com)/[^\s<>\"']+", lambda m: local_url(m.group(0)), body)
+        body = re.sub(r"https?://(?:www\.)?(?:falsy\.me|cheolguso\.com|lab\.falsy\.me)/[^\s<>\"']+", lambda m: local_url(m.group(0)), body)
         assets = Assets()
         assets.feed(body)
         for url in assets.urls:
