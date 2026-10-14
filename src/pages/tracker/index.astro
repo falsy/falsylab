@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delivery Tracker for Whale</title>
+    <script is:inline>
+      // Restore the popup URL before the original app reads location.pathname.
+      // GitHub Pages sends unknown tracking-number paths through 404.html.
+      const route = new URLSearchParams(window.location.search).get('route');
+      if (route) {
+        try {
+          const original = new URL(route, window.location.origin);
+          if (original.origin === window.location.origin && original.pathname.startsWith('/tracker/')) {
+            window.history.replaceState(null, '', original.pathname + original.search + original.hash);
+          }
+        } catch { /* Invalid URLs show the original app's invalid-request screen. */ }
+      }
+    </script>
+    <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8365775889087902" crossorigin="anonymous"></script>
+    <script is:inline type="module" crossorigin="anonymous" src="/tracker/assets/tracker-v1.0.10.js"></script>
+    <link rel="stylesheet" crossorigin="anonymous" href="/tracker/assets/tracker-v1.0.10.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

@@ -12,6 +12,7 @@ const nav = [{ name: 'About', url: '/about/' }, { name: 'Programming', url: '/pr
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <slot name="head" />
     <title>{title === '폴시랩' ? title : `${title} | 폴시랩`}</title>
     <meta name="description" content={description} />
     <meta name="author" content="falsy" />

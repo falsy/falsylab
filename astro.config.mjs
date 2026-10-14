@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://falsy.me',
   output: 'static',
-  trailingSlash: 'always',
+  trailingSlash: 'ignore',
   devToolbar: { enabled: false },
   markdown: {
     shikiConfig: {
